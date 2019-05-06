@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookifyApi", "BookifyApi\BookifyApi.csproj", "{B89507D4-33BB-45A3-B228-7F3C902C5901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookifyApi", "BookifyApi\BookifyApi.csproj", "{B89507D4-33BB-45A3-B228-7F3C902C5901}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Services", "04.Services", "{14550748-A449-4E3E-8C8D-6C0815C352D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.DataAccess", "03.DataAccess", "{01256F57-2118-4A06-8A5D-FAA71E742BC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookifyApi.DataAccess", "BookifyApi.DataAccess\BookifyApi.DataAccess.csproj", "{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Infrastructure", "01.Infrastructure", "{BCDB096B-621A-46B6-B146-E89AAFF00796}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookifyApi.Infrastructure", "BookifyApi.Infrastructure\BookifyApi.Infrastructure.csproj", "{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +25,22 @@ Global
 		{B89507D4-33BB-45A3-B228-7F3C902C5901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B89507D4-33BB-45A3-B228-7F3C902C5901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B89507D4-33BB-45A3-B228-7F3C902C5901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B89507D4-33BB-45A3-B228-7F3C902C5901} = {14550748-A449-4E3E-8C8D-6C0815C352D5}
+		{B34D697E-DD27-478A-9CDC-D99A23C5D7B0} = {01256F57-2118-4A06-8A5D-FAA71E742BC9}
+		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3} = {BCDB096B-621A-46B6-B146-E89AAFF00796}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9E2A565-6033-43A1-A53E-5AE97164F18C}
