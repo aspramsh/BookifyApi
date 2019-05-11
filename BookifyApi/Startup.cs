@@ -1,5 +1,5 @@
-﻿using BookifyApi.DataAccess.DbContexts;
-using BookifyApi.Infrastructure.Enums;
+﻿using Bookify.DataAccess.DbContexts;
+using Bookify.Infrastructure.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -51,11 +51,11 @@ namespace BookifyApi
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            services.AddDbContext<BookifyApiDbContext>(options => 
-            options.UseNpgsql(Configuration.GetConnectionString("BookifyApiConnection")));
+            services.AddDbContext<BookifyDbContext>(options => 
+            options.UseNpgsql(Configuration.GetConnectionString("BookifyConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookifyApiDbContext>()
+                .AddEntityFrameworkStores<BookifyDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
@@ -66,7 +66,7 @@ namespace BookifyApi
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<BookifyApiDbContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<BookifyDbContext>();
 
                 context.Database.EnsureCreated();
             }

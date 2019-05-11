@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace BookifyApi.Infrastructure.Extensions
+namespace Bookify.Infrastructure.Extensions
 {
     public static class SnakeCaseExtension
     {

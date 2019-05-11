@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookifyApi.DataAccess.DbContexts.Interfaces
+namespace Bookify.DataAccess.DbContexts.Interfaces
 {
     public interface IDbContext
     {
