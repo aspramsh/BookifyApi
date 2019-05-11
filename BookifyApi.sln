@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Services", "04.Services"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.DataAccess", "03.DataAccess", "{01256F57-2118-4A06-8A5D-FAA71E742BC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.DataAccess", "BookifyApi.DataAccess\Bookify.DataAccess.csproj", "{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.DataAccess", "Bookify.DataAccess\Bookify.DataAccess.csproj", "{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Infrastructure", "01.Infrastructure", "{BCDB096B-621A-46B6-B146-E89AAFF00796}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Infrastructure", "BookifyApi.Infrastructure\Bookify.Infrastructure.csproj", "{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Infrastructure", "Bookify.Infrastructure\Bookify.Infrastructure.csproj", "{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{78976D1F-40C7-4514-95B7-5503273AEE84}"
 	ProjectSection(SolutionItems) = preProject
