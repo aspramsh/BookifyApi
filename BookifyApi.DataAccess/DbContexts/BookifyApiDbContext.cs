@@ -1,4 +1,5 @@
 ﻿using BookifyApi.DataAccess.DbContexts.Interfaces;
+using BookifyApi.DataAccess.Extensions;
 using BookifyApi.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,8 @@ namespace BookifyApi.DataAccess.DbContexts
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
+
+            modelBuilder.NamesToSnakeCase();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
