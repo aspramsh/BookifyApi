@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bookify.Business\Bookify.Business.csproj" />
     <ProjectReference Include="..\Bookify.DataAccess\Bookify.DataAccess.csproj" />
     <ProjectReference Include="..\Bookify.Infrastructure\Bookify.Infrastructure.csproj" />
   </ItemGroup>

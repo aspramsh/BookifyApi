@@ -1,4 +1,6 @@
-﻿using Bookify.DataAccess.DbContexts;
+﻿using Bookify.Business.Services;
+using Bookify.Business.Services.Interfaces;
+using Bookify.DataAccess.DbContexts;
 using Bookify.Infrastructure.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +59,10 @@ namespace BookifyApi
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookifyDbContext>()
                 .AddDefaultTokenProviders();
+
+            #region Services Injection
+            services.AddScoped<IUserService, UserService>();
+            #endregion
 
             services.AddMvc();
         }
