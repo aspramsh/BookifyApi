@@ -1,16 +1,16 @@
-﻿using BookifyApi.DataAccess.DbContexts.Interfaces;
-using BookifyApi.DataAccess.Extensions;
-using BookifyApi.Infrastructure.Helpers;
+﻿using Bookify.DataAccess.DbContexts.Interfaces;
+using Bookify.DataAccess.Extensions;
+using Bookify.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookifyApi.DataAccess.DbContexts
+namespace Bookify.DataAccess.DbContexts
 {
-    public class BookifyApiDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>, IDbContext
+    public class BookifyDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>, IDbContext
     {
-        public BookifyApiDbContext(DbContextOptions<BookifyApiDbContext> options) 
+        public BookifyDbContext(DbContextOptions<BookifyDbContext> options) 
             : base(options)
         {
         }
@@ -41,7 +41,7 @@ namespace BookifyApi.DataAccess.DbContexts
 
         public string FullName()
         {
-            return nameof(BookifyApiDbContext);
+            return nameof(BookifyDbContext);
         }
 
         public new DbSet<TEntity> Set<TEntity>() where TEntity : class

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
 
-namespace BookifyApi.Infrastructure.Helpers
+namespace Bookify.Infrastructure.Helpers
 {
     public static class EnvironmentHelper
     {

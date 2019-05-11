@@ -9,16 +9,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Services", "04.Services"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.DataAccess", "03.DataAccess", "{01256F57-2118-4A06-8A5D-FAA71E742BC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookifyApi.DataAccess", "BookifyApi.DataAccess\BookifyApi.DataAccess.csproj", "{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.DataAccess", "Bookify.DataAccess\Bookify.DataAccess.csproj", "{B34D697E-DD27-478A-9CDC-D99A23C5D7B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Infrastructure", "01.Infrastructure", "{BCDB096B-621A-46B6-B146-E89AAFF00796}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookifyApi.Infrastructure", "BookifyApi.Infrastructure\BookifyApi.Infrastructure.csproj", "{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Infrastructure", "Bookify.Infrastructure\Bookify.Infrastructure.csproj", "{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{78976D1F-40C7-4514-95B7-5503273AEE84}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Business", "02.Business", "{1084C970-17A9-47F5-9A47-21908076D5CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookify.Business", "Bookify.Business\Bookify.Business.csproj", "{DB39FD30-643F-43C1-AF0A-B8AADF27A679}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +42,10 @@ Global
 		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB39FD30-643F-43C1-AF0A-B8AADF27A679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB39FD30-643F-43C1-AF0A-B8AADF27A679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB39FD30-643F-43C1-AF0A-B8AADF27A679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB39FD30-643F-43C1-AF0A-B8AADF27A679}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 		{B89507D4-33BB-45A3-B228-7F3C902C5901} = {14550748-A449-4E3E-8C8D-6C0815C352D5}
 		{B34D697E-DD27-478A-9CDC-D99A23C5D7B0} = {01256F57-2118-4A06-8A5D-FAA71E742BC9}
 		{44F5329B-23E0-46B2-ACCB-EEE6D46543D3} = {BCDB096B-621A-46B6-B146-E89AAFF00796}
+		{DB39FD30-643F-43C1-AF0A-B8AADF27A679} = {1084C970-17A9-47F5-9A47-21908076D5CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9E2A565-6033-43A1-A53E-5AE97164F18C}

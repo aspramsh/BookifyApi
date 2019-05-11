@@ -1,7 +1,7 @@
-﻿using BookifyApi.Infrastructure.Extensions;
+﻿using Bookify.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookifyApi.DataAccess.Extensions
+namespace Bookify.DataAccess.Extensions
 {
     public static class ModelBuilderExtensions
     {

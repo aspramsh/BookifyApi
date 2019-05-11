@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace BookifyApi.DataAccess.Migrations
+namespace Bookify.DataAccess.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -158,8 +158,8 @@ namespace BookifyApi.DataAccess.Migrations
                 columns: new[] { "id", "concurrency_stamp", "name", "normalized_name" },
                 values: new object[,]
                 {
-                    { "ed7e02e1-578c-423e-8fe7-2a4512e85242", "ebfda3f1-3e03-4ed0-9e5a-2ccab5fb160d", "Admin", "ADMIN" },
-                    { "7fd7460e-1d81-4ccb-8500-d5b0579037f2", "ab5d7b0d-7f11-48a3-8194-6afc35ead03d", "User", "USER" }
+                    { "ed7e02e1-578c-423e-8fe7-2a4512e85242", "b53327a5-f389-4b89-bf16-32467ffedbca", "Admin", "ADMIN" },
+                    { "7fd7460e-1d81-4ccb-8500-d5b0579037f2", "9d89d78e-9c11-4e64-8a4b-4a54a303a87a", "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
