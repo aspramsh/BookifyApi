@@ -2,6 +2,7 @@
 using Bookify.Business.Services.Interfaces;
 using Bookify.DataAccess.DbContexts;
 using Bookify.Infrastructure.Enums;
+using Bookify.Infrastructure.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -87,6 +88,8 @@ namespace BookifyApi
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();
 
