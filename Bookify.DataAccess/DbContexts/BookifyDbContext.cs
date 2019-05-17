@@ -1,4 +1,6 @@
-﻿using Bookify.DataAccess.DbContexts.Interfaces;
+﻿using Bookify.DataAccess.DataSeeding.Interfaces;
+using Bookify.DataAccess.DbContexts.Interfaces;
+using Bookify.DataAccess.Entities;
 using Bookify.DataAccess.Extensions;
 using Bookify.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Hosting;
@@ -10,13 +12,19 @@ namespace Bookify.DataAccess.DbContexts
 {
     public class BookifyDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>, IDbContext
     {
-        public BookifyDbContext(DbContextOptions<BookifyDbContext> options) 
+        private readonly IDataSeed _dataSeed;
+
+        public BookifyDbContext(DbContextOptions<BookifyDbContext> options,
+                                IDataSeed dataSeed) 
             : base(options)
         {
+            _dataSeed = dataSeed;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<EmailTemplate>().HasData(_dataSeed.GetEmailTemplates());
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<IdentityUser>().ToTable("Users");
 
@@ -48,5 +56,9 @@ namespace Bookify.DataAccess.DbContexts
         {
             return base.Set<TEntity>();
         }
+
+        #region DbSets
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        #endregion
     }
 }

@@ -1,0 +1,15 @@
+[
+  {
+    "Id": 1,
+    "Name": "UserRegistration",
+    "Subject": "Registration Confirmation",
+    "Body": "<body><p>Hi,</p><br/><br/><p>Thanks for creating an account with Bookify!</p><p>Please verify your email address:</p><p> <a href ='{0}'> VERIFY YOUR EMAIL ADDRESS</a></p><p>You can also paste the following link into your browser: {0}</p><p>If you need additional help, contact {1}</p><p>Sincerely,</p><p>The Bookify Team</p></body>"
+  },
+
+  {
+    "Id": 2,
+    "Name": "ResetPassword",
+    "Subject": "Reset Password",
+    "Body": "\"<body><p>Hi,</p><br/><br/><p>You have requested your password reset</p><p>To reset it, click the following link and follow the instructions.</p><p> <a href ='{0}'> RESET PASSWORD</a></p><p>You can also paste the following link into your browser: {0}</p><p>If you need additional help, contact {1}</p><p>Sincerely,</p><p>The Bookify Team</p></body>\""
+  }
+]
