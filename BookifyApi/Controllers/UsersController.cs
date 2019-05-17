@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
+using Bookify.Business.Models.Request;
 using Bookify.Business.Services.Interfaces;
+using Bookify.Business.Settings;
+using Bookify.Infrastructure.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace BookifyApi.Controllers
 {
@@ -20,15 +26,50 @@ namespace BookifyApi.Controllers
         private readonly IUserService _userService;
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IEmailTemplateService _emailTemplateService;
+        private readonly EmailVerificationSettings _emailVerificationSettings;
 
         public UsersController(ILoggerFactory loggerFactory,
                                IMapper mapper,
                                IUserService userService,
-                               IEmailSender emailSender)
+                               IEmailSender emailSender,
+                               IEmailTemplateService emailTemplateService,
+                               IOptions<EmailVerificationSettings> emailVerificationSettings)
             : base(loggerFactory.CreateLogger<UsersController>(), mapper)
         {
             _logger = loggerFactory.CreateLogger<UsersController>();
             _userService = userService;
+            _emailTemplateService = emailTemplateService;
+            _emailVerificationSettings = emailVerificationSettings.Value;
         }
+
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterAsync([FromBody] RequestRegisterViewModel model)
+        {
+            var userModel = await _userService.CreateUserAsync(model);
+
+            var emailTemplateName = EmailTemplateTypes.UserRegistration.ToString();
+
+            var link =
+                $"{_emailVerificationSettings.BaseUrl}/{_emailVerificationSettings.UserVerificationAddress}/{userModel.EncodedToken}";
+
+            var email = _emailVerificationSettings.EmailAddress;
+
+            var emailTemplate = await _emailTemplateService.GetSingleAsync(x => x.Name == emailTemplateName);
+
+            // send email
+
+            await _emailSender.SendEmailAsync(userModel.Email, emailTemplate.Subject,
+                string.Format(emailTemplate.Body, link, email));
+
+            return Ok(userModel);
+        }
+
     }
 }

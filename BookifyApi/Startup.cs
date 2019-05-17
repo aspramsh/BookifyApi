@@ -1,5 +1,7 @@
 ﻿using Bookify.Business.Services;
 using Bookify.Business.Services.Interfaces;
+using Bookify.DataAccess.DataSeeding;
+using Bookify.DataAccess.DataSeeding.Interfaces;
 using Bookify.DataAccess.DbContexts;
 using Bookify.Infrastructure.Enums;
 using Bookify.Infrastructure.Http;
@@ -53,6 +55,8 @@ namespace BookifyApi
             services.AddDirectoryBrowser();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddSingleton<IDataSeed>(new DataSeed());
 
             services.AddDbContext<BookifyDbContext>(options => 
             options.UseNpgsql(Configuration.GetConnectionString("BookifyConnection")));
