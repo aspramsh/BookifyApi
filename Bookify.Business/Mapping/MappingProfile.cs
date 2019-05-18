@@ -16,6 +16,8 @@ namespace Bookify.Business.Mapping
                                                 .ForMember(x => x.TokenCreatedDateTimeUtc, opt => opt.MapFrom(t => DateTime.Now))*/
                                                 .ForMember(x => x.UserName, opt => opt.MapFrom(y => y.Email))
                                                 .ReverseMap();
+
+            CreateMap<IdentityUser, UserModel>().ReverseMap();
         }
     }
 }

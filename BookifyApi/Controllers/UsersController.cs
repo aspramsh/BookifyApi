@@ -41,6 +41,7 @@ namespace BookifyApi.Controllers
             _userService = userService;
             _emailTemplateService = emailTemplateService;
             _emailVerificationSettings = emailVerificationSettings.Value;
+            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -56,8 +57,7 @@ namespace BookifyApi.Controllers
 
             var emailTemplateName = EmailTemplateTypes.UserRegistration.ToString();
 
-            var link =
-                $"{_emailVerificationSettings.BaseUrl}/{_emailVerificationSettings.UserVerificationAddress}/{userModel.EncodedToken}";
+            var link = $"{_emailVerificationSettings.BaseUrl}/{_emailVerificationSettings.UserVerificationAddress}/{userModel.EncodedToken}";
 
             var email = _emailVerificationSettings.EmailAddress;
 
