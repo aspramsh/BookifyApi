@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿using Bookify.Infrastructure.Helpers;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System;
 
 namespace BookifyApi
 {
@@ -7,6 +9,17 @@ namespace BookifyApi
     {
         public static void Main(string[] args)
         {
+            #region Create default environment on machine level
+
+            var environment = Environment.GetEnvironmentVariable(EnvironmentHelper.EnviromentVariable);
+
+            if (environment == null)
+            {
+                Environment.SetEnvironmentVariable(EnvironmentHelper.EnviromentVariable, "Development");
+            }
+
+            #endregion
+
             CreateWebHostBuilder(args).Build().Run();
         }
 
