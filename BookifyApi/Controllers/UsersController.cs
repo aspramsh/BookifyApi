@@ -57,19 +57,32 @@ namespace BookifyApi.Controllers
 
             var emailTemplateName = EmailTemplateTypes.UserRegistration.ToString();
 
-            var link = $"{_emailVerificationSettings.BaseUrl}/{_emailVerificationSettings.UserVerificationAddress}/{userModel.EncodedToken}";
+            var link =
+                $"{_emailVerificationSettings.BaseUrl}/{_emailVerificationSettings.UserVerificationAddress}/{userModel.EncodedToken}";
 
             var email = _emailVerificationSettings.EmailAddress;
 
             var emailTemplate = await _emailTemplateService.GetSingleAsync(x => x.Name == emailTemplateName);
 
             // send email
-
             await _emailSender.SendEmailAsync(userModel.Email, emailTemplate.Subject,
                 string.Format(emailTemplate.Body, link, email));
 
             return Ok(userModel);
         }
 
+        /// <summary>
+        /// Verification of user
+        /// </summary>
+        /// <param name="token">Base64 token</param>
+        /// <returns>No Content if success</returns>
+        [AllowAnonymous]
+        [HttpPut("Verifications/{token}")]
+        public async Task<IActionResult> UserVerificationAsync(string token)
+        {
+            await _userService.VerifyUserEmailAsync(token);
+
+            return NoContent();
+        }
     }
 }
