@@ -1,6 +1,7 @@
 ﻿using Bookify.DataAccess.DataSeeding.Interfaces;
 using Bookify.DataAccess.DbContexts.Interfaces;
 using Bookify.DataAccess.Entities;
+using Bookify.DataAccess.Entities.Identity;
 using Bookify.DataAccess.Extensions;
 using Bookify.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bookify.DataAccess.DbContexts
 {
-    public class BookifyDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>, IDbContext
+    public class BookifyDbContext : IdentityDbContext<User, IdentityRole, string>, IDbContext
     {
         private readonly IDataSeed _dataSeed;
 
@@ -26,7 +27,7 @@ namespace Bookify.DataAccess.DbContexts
             modelBuilder.Entity<EmailTemplate>().HasData(_dataSeed.GetEmailTemplates());
 
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<IdentityUser>().ToTable("Users");
+            modelBuilder.Entity<User>().ToTable("Users");
 
             modelBuilder.Entity<IdentityRole>().ToTable("Roles").HasData(
                 new IdentityRole { Id = "ed7e02e1-578c-423e-8fe7-2a4512e85242", Name = "Admin", NormalizedName = "ADMIN" },

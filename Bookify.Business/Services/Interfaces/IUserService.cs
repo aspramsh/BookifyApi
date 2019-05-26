@@ -7,5 +7,7 @@ namespace Bookify.Business.Services.Interfaces
     public interface IUserService
     {
         Task<UserModel> CreateUserAsync(RequestRegisterViewModel model);
+
+        Task VerifyUserEmailAsync(string token);
     }
 }

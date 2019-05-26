@@ -19,6 +19,121 @@ namespace Bookify.DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            modelBuilder.Entity("Bookify.DataAccess.Entities.EmailTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnName("body");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnName("subject");
+
+                    b.HasKey("Id")
+                        .HasName("pk_email_templates");
+
+                    b.ToTable("email_templates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Body = "<body><p>Hi,</p><br/><br/><p>Thanks for creating an account with Bookify!</p><p>Please verify your email address:</p><p> <a href ='{0}'> VERIFY YOUR EMAIL ADDRESS</a></p><p>You can also paste the following link into your browser: {0}</p><p>If you need additional help, contact {1}</p><p>Sincerely,</p><p>The Bookify Team</p></body>",
+                            Name = "UserRegistration",
+                            Subject = "Registration Confirmation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Body = "\"<body><p>Hi,</p><br/><br/><p>You have requested your password reset</p><p>To reset it, click the following link and follow the instructions.</p><p> <a href ='{0}'> RESET PASSWORD</a></p><p>You can also paste the following link into your browser: {0}</p><p>If you need additional help, contact {1}</p><p>Sincerely,</p><p>The Bookify Team</p></body>\"",
+                            Name = "ResetPassword",
+                            Subject = "Reset Password"
+                        });
+                });
+
+            modelBuilder.Entity("Bookify.DataAccess.Entities.Identity.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnName("access_failed_count");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnName("concurrency_stamp");
+
+                    b.Property<string>("Email")
+                        .HasColumnName("email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnName("email_confirmed");
+
+                    b.Property<string>("JwtToken")
+                        .HasColumnName("jwt_token");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnName("lockout_enabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnName("lockout_end");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnName("normalized_email")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnName("normalized_user_name")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnName("password_hash");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnName("phone_number");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnName("phone_number_confirmed");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnName("security_stamp");
+
+                    b.Property<Guid?>("Token")
+                        .HasColumnName("token");
+
+                    b.Property<DateTime?>("TokenCreatedDateTimeUtc")
+                        .HasColumnName("token_created_date_time_utc");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnName("two_factor_enabled");
+
+                    b.Property<string>("UserName")
+                        .HasColumnName("user_name")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id")
+                        .HasName("pk_users");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("email_index");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("user_name_index");
+
+                    b.ToTable("users");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -50,14 +165,14 @@ namespace Bookify.DataAccess.Migrations
                         new
                         {
                             Id = "ed7e02e1-578c-423e-8fe7-2a4512e85242",
-                            ConcurrencyStamp = "b53327a5-f389-4b89-bf16-32467ffedbca",
+                            ConcurrencyStamp = "efcb2579-c661-4869-a2f1-556f02e31143",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "7fd7460e-1d81-4ccb-8500-d5b0579037f2",
-                            ConcurrencyStamp = "9d89d78e-9c11-4e64-8a4b-4a54a303a87a",
+                            ConcurrencyStamp = "2d8879df-cef9-445e-ad8d-dd5f823577d4",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -86,72 +201,6 @@ namespace Bookify.DataAccess.Migrations
                         .HasName("ix_role_claims_role_id");
 
                     b.ToTable("role_claims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnName("access_failed_count");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnName("concurrency_stamp");
-
-                    b.Property<string>("Email")
-                        .HasColumnName("email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnName("email_confirmed");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnName("lockout_enabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnName("lockout_end");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnName("normalized_email")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnName("normalized_user_name")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnName("password_hash");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnName("phone_number");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnName("phone_number_confirmed");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnName("security_stamp");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnName("two_factor_enabled");
-
-                    b.Property<string>("UserName")
-                        .HasColumnName("user_name")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id")
-                        .HasName("pk_users");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("email_index");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("user_name_index");
-
-                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -251,7 +300,7 @@ namespace Bookify.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Bookify.DataAccess.Entities.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_user_claims_users_user_id")
@@ -260,7 +309,7 @@ namespace Bookify.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Bookify.DataAccess.Entities.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_user_logins_users_user_id")
@@ -275,7 +324,7 @@ namespace Bookify.DataAccess.Migrations
                         .HasConstraintName("fk_user_roles_roles_role_id")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Bookify.DataAccess.Entities.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_user_roles_users_user_id")
@@ -284,7 +333,7 @@ namespace Bookify.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Bookify.DataAccess.Entities.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_user_tokens_users_user_id")

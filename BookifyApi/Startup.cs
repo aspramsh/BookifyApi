@@ -8,6 +8,7 @@ using Bookify.Business.Settings;
 using Bookify.DataAccess.DataSeeding;
 using Bookify.DataAccess.DataSeeding.Interfaces;
 using Bookify.DataAccess.DbContexts;
+using Bookify.DataAccess.Entities.Identity;
 using Bookify.DataAccess.Repositories;
 using Bookify.DataAccess.Repositories.Interfaces;
 using Bookify.Infrastructure.Enums;
@@ -74,7 +75,7 @@ namespace BookifyApi
             services.AddDbContext<BookifyDbContext>(options => 
             options.UseNpgsql(Configuration.GetConnectionString("BookifyConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<BookifyDbContext>()
                 .AddDefaultTokenProviders();
 
