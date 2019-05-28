@@ -13,6 +13,7 @@ using Bookify.DataAccess.Repositories;
 using Bookify.DataAccess.Repositories.Interfaces;
 using Bookify.Infrastructure.Enums;
 using Bookify.Infrastructure.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
@@ -57,13 +59,14 @@ namespace BookifyApi
                     {
                         options.AddPolicy(RolesEnum.Admin.ToString(), policyAdmin =>
                         {
-                            policyAdmin.RequireRole(RolesEnum.Admin.ToString());
+                            policyAdmin.RequireRole("role", RolesEnum.Admin.ToString().ToLower());
                         });
                         options.AddPolicy(RolesEnum.User.ToString(), policyUser =>
                         {
-                            policyUser.RequireRole(RolesEnum.User.ToString());
+                            policyUser.RequireRole("role", RolesEnum.User.ToString().ToLower());
                         });
                     })
+                .AddDataAnnotations()
                 .AddJsonFormatters();
 
             services.AddDirectoryBrowser();
@@ -98,6 +101,7 @@ namespace BookifyApi
             );
 
             services.Configure<EmailVerificationSettings>(Configuration.GetSection("EmailVerificationSettings"));
+            services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
 
             services.AddMvc();
             services.AddAutoMapper(typeof(Startup));
@@ -123,6 +127,24 @@ namespace BookifyApi
                 });
             });
             #endregion
+
+            var audience = Configuration.GetValue<string>("BookifyAudience");
+            var authSettings = Configuration.GetSection("AuthSettings").Get<AuthSettings>();
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.Audience = audience;
+                o.Authority = authSettings.AuthServiceAddress;
+                o.RequireHttpsMetadata = false;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,16 +1,21 @@
 ﻿using AutoMapper;
 using Bookify.Business.Models;
 using Bookify.Business.Models.Request;
+using Bookify.Business.Models.Response;
 using Bookify.Business.Services.Interfaces;
+using Bookify.Business.Settings;
 using Bookify.DataAccess.Entities.Identity;
 using Bookify.Infrastructure.Enums;
 using Bookify.Infrastructure.Http;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Bookify.Business.Services
@@ -66,7 +71,12 @@ namespace Bookify.Business.Services
 
                 if (roleResult.Succeeded)
                 {
-                    return _mapper.Map<UserModel>(user);
+                    var claimResult = await _userManager.AddClaimAsync(user, new Claim("Role", "User"));
+
+                    if (claimResult.Succeeded)
+                    {
+                        return _mapper.Map<UserModel>(user);
+                    }
                 }
 
                 throw new HttpResponseException(HttpStatusCode.BadRequest,
@@ -127,5 +137,85 @@ namespace Bookify.Business.Services
             }
         }
 
+        /// <summary>
+        /// Authenticate
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="secret"></param>
+        /// <returns></returns>
+        public async Task<TokenResponse> GetTokenResponseAsync(RequestLoginViewModel model, AuthSettings authSettings)
+        {
+            var tokenResponse = await GetTokenAsync(model, authSettings);
+
+            return tokenResponse;
+        }
+
+        public async Task<ResponseLoginViewModel> LoginAsync(RequestLoginViewModel model)
+        {
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (!user.EmailConfirmed)
+                {
+                    throw new HttpResponseException(HttpStatusCode.Unauthorized, new ResponseErrorModel("Please confirm your e-mail."));
+                }
+
+                var claims = await _userManager.GetClaimsAsync(user);
+
+                var response = _mapper.Map<ResponseLoginViewModel>(user);
+
+                response.Claims = _mapper.Map<List<UserClaimsModel>>(claims);
+
+                return response;
+
+            }
+
+            throw new HttpResponseException(HttpStatusCode.Unauthorized, new ResponseErrorModel("Log in failed."));
+        }
+
+        #region Private
+        private async Task<TokenResponse> GetTokenAsync(RequestLoginViewModel model, AuthSettings authSettings)
+        {
+            // discover endpoints from metadata
+            using (var cl = new DiscoveryClient(authSettings.AuthServiceAddress)
+            {
+                Policy =
+                {
+                    RequireHttps = false
+                }
+            })
+            {
+                var discover = await cl.GetAsync();
+                var tokenEndpoint = discover.TokenEndpoint;
+
+                // request token
+                using (var tokenClient = new TokenClient(tokenEndpoint, authSettings.ClientId, authSettings.ClientSecret))
+                {
+                    var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(model.Email, model.Password, authSettings.ClientScope);
+
+                    if (tokenResponse.IsError)
+                    {
+                        //todo:  log here
+                        var errorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), tokenResponse.ErrorDescription);
+                        switch (errorCode)
+                        {
+                            case ErrorCode.Forbidden:
+                                throw new HttpResponseException(HttpStatusCode.Forbidden, new ResponseErrorModel("Email is not verified."));
+                            case ErrorCode.NotFound:
+                                throw new HttpResponseException(HttpStatusCode.NotFound, new ResponseErrorModel("Login and Password do not match."));
+                            case ErrorCode.Unauthorized:
+                                throw new HttpResponseException(HttpStatusCode.Unauthorized, new ResponseErrorModel("Login and Password do not match."));
+                            default:
+                                throw new HttpResponseException(HttpStatusCode.BadRequest, new ResponseErrorModel(tokenResponse.ErrorDescription));
+                        }
+                    }
+
+                    return tokenResponse;
+                }
+            }
+        }
+        #endregion
     }
 }

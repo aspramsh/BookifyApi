@@ -28,13 +28,15 @@ namespace BookifyApi.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly EmailVerificationSettings _emailVerificationSettings;
+        private readonly AuthSettings _authSettings;
 
         public UsersController(ILoggerFactory loggerFactory,
                                IMapper mapper,
                                IUserService userService,
                                IEmailSender emailSender,
                                IEmailTemplateService emailTemplateService,
-                               IOptions<EmailVerificationSettings> emailVerificationSettings)
+                               IOptions<EmailVerificationSettings> emailVerificationSettings,
+                               IOptions<AuthSettings> authSettings)
             : base(loggerFactory.CreateLogger<UsersController>(), mapper)
         {
             _logger = loggerFactory.CreateLogger<UsersController>();
@@ -42,6 +44,7 @@ namespace BookifyApi.Controllers
             _emailTemplateService = emailTemplateService;
             _emailVerificationSettings = emailVerificationSettings.Value;
             _emailSender = emailSender;
+            _authSettings = authSettings.Value;
         }
 
         /// <summary>
@@ -77,12 +80,37 @@ namespace BookifyApi.Controllers
         /// <param name="token">Base64 token</param>
         /// <returns>No Content if success</returns>
         [AllowAnonymous]
-        [HttpPut("Verifications/{token}")]
+        [HttpPut("verifications/{token}")]
         public async Task<IActionResult> UserVerificationAsync(string token)
         {
             await _userService.VerifyUserEmailAsync(token);
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// User log for token
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("accessToken")]
+        public async Task<IActionResult> GetTokenResponseAsync([FromBody]RequestLoginViewModel model)
+        {
+            var result = await _userService.GetTokenResponseAsync(model, _authSettings);
+
+            _logger.LogInformation("User logged in.");
+
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("authorization")]
+        public async Task<IActionResult> LoginAsync([FromBody]RequestLoginViewModel model)
+        {
+            var response = await _userService.LoginAsync(model);
+
+            return Ok(response);
         }
     }
 }
