@@ -10,7 +10,7 @@ namespace BookifyApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    [Authorize(Policy = "Admin")]
+    [Authorize(Policy = "User")]
     [EnableCors("CorsPolicy")]
     [Produces(MediaTypeNames.Application.Json)]
     public class TestController : BaseController
