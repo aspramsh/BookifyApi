@@ -15,8 +15,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel;
 
 namespace Bookify.Business.Services
 {
@@ -179,43 +181,48 @@ namespace Bookify.Business.Services
         private async Task<TokenResponse> GetTokenAsync(RequestLoginViewModel model, AuthSettings authSettings)
         {
             // discover endpoints from metadata
-            using (var cl = new DiscoveryClient(authSettings.AuthServiceAddress)
+            //var cl = new DiscoveryEndpoint(authSettings.AuthServiceAddress);
+            var client = new HttpClient();
+
+            var disco = await client.GetDiscoveryDocumentAsync("https://demo.identityserver.io");
+            if (disco.IsError) throw new Exception(disco.Error);
+            var tokenEndpoint = disco.TokenEndpoint;
+
+            // request token
+
+            var tokenResponse = await client.RequestTokenAsync(new TokenRequest
             {
-                Policy =
+                Address = tokenEndpoint,
+                GrantType = OidcConstants.GrantTypes.Password,
+                ClientId = authSettings.ClientId,
+                ClientSecret = authSettings.ClientSecret,
+
+                Parameters =
                 {
-                    RequireHttps = false
+                    { "email", model.Email },
+                    { "password", model.Password }
                 }
-            })
+            });
+
+            if (tokenResponse.IsError)
             {
-                var discover = await cl.GetAsync();
-                var tokenEndpoint = discover.TokenEndpoint;
-
-                // request token
-                using (var tokenClient = new TokenClient(tokenEndpoint, authSettings.ClientId, authSettings.ClientSecret))
+                //todo:  log here
+                var errorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), tokenResponse.ErrorDescription);
+                switch (errorCode)
                 {
-                    var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(model.Email, model.Password, authSettings.ClientScope);
-
-                    if (tokenResponse.IsError)
-                    {
-                        //todo:  log here
-                        var errorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), tokenResponse.ErrorDescription);
-                        switch (errorCode)
-                        {
-                            case ErrorCode.Forbidden:
-                                throw new HttpResponseException(HttpStatusCode.Forbidden, new ResponseErrorModel("Email is not verified."));
-                            case ErrorCode.NotFound:
-                                throw new HttpResponseException(HttpStatusCode.NotFound, new ResponseErrorModel("Login and Password do not match."));
-                            case ErrorCode.Unauthorized:
-                                throw new HttpResponseException(HttpStatusCode.Unauthorized, new ResponseErrorModel("Login and Password do not match."));
-                            default:
-                                throw new HttpResponseException(HttpStatusCode.BadRequest, new ResponseErrorModel(tokenResponse.ErrorDescription));
-                        }
-                    }
-
-                    return tokenResponse;
+                    case ErrorCode.Forbidden:
+                        throw new HttpResponseException(HttpStatusCode.Forbidden, new ResponseErrorModel("Email is not verified."));
+                    case ErrorCode.NotFound:
+                        throw new HttpResponseException(HttpStatusCode.NotFound, new ResponseErrorModel("Login and Password do not match."));
+                    case ErrorCode.Unauthorized:
+                        throw new HttpResponseException(HttpStatusCode.Unauthorized, new ResponseErrorModel("Login and Password do not match."));
+                    default:
+                        throw new HttpResponseException(HttpStatusCode.BadRequest, new ResponseErrorModel(tokenResponse.ErrorDescription));
                 }
             }
+            return tokenResponse;
         }
-        #endregion
     }
+    #endregion
 }
+
