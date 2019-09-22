@@ -19,7 +19,7 @@ namespace Bookify.Business.Services.Interfaces
         /// <param name="model"></param>
         /// <param name="secret"></param>
         /// <returns></returns>
-        Task<TokenResponse> GetTokenResponseAsync(RequestLoginViewModel model, AuthSettings authSettings);
+        Task<string> GetTokenResponseAsync(RequestLoginViewModel model, AuthSettings authSettings);
 
         /// <summary>
         /// Login

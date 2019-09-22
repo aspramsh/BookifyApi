@@ -145,11 +145,9 @@ namespace Bookify.Business.Services
         /// <param name="model"></param>
         /// <param name="secret"></param>
         /// <returns></returns>
-        public async Task<TokenResponse> GetTokenResponseAsync(RequestLoginViewModel model, AuthSettings authSettings)
+        public async Task<string> GetTokenResponseAsync(RequestLoginViewModel model, AuthSettings authSettings)
         {
-            var tokenResponse = await GetTokenAsync(model, authSettings);
-
-            return tokenResponse;
+            return await GetTokenAsync(model, authSettings);
         }
 
         public async Task<ResponseLoginViewModel> LoginAsync(RequestLoginViewModel model)
@@ -178,29 +176,30 @@ namespace Bookify.Business.Services
         }
 
         #region Private
-        private async Task<TokenResponse> GetTokenAsync(RequestLoginViewModel model, AuthSettings authSettings)
+        private async Task<string> GetTokenAsync(RequestLoginViewModel model, AuthSettings authSettings)
         {
             // discover endpoints from metadata
             //var cl = new DiscoveryEndpoint(authSettings.AuthServiceAddress);
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync("https://demo.identityserver.io");
+            var disco = await client.GetDiscoveryDocumentAsync(authSettings.AuthServiceAddress);
             if (disco.IsError) throw new Exception(disco.Error);
             var tokenEndpoint = disco.TokenEndpoint;
 
             // request token
 
-            var tokenResponse = await client.RequestTokenAsync(new TokenRequest
+            var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = tokenEndpoint,
-                GrantType = OidcConstants.GrantTypes.Password,
+                UserName = model.Email,
+                Password = model.Password,
                 ClientId = authSettings.ClientId,
                 ClientSecret = authSettings.ClientSecret,
 
                 Parameters =
                 {
                     { "email", model.Email },
-                    { "password", model.Password }
+                    //{ "password", model.Password }
                 }
             });
 
@@ -220,7 +219,7 @@ namespace Bookify.Business.Services
                         throw new HttpResponseException(HttpStatusCode.BadRequest, new ResponseErrorModel(tokenResponse.ErrorDescription));
                 }
             }
-            return tokenResponse;
+            return tokenResponse.AccessToken;
         }
     }
     #endregion
